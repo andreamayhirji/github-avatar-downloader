@@ -11,7 +11,7 @@ function getRepoContributors(repoOwner, repoName, handleFetchAvatarUrl) {
   if (!(repoOwner && repoName)) {
     console.warn("You should enter your username and a repo name.")
     return;
-  } 
+  }
 
 
   // console.log('repoOwner: ', repoOwner);
@@ -29,7 +29,7 @@ function getRepoContributors(repoOwner, repoName, handleFetchAvatarUrl) {
   request(options, function (err, res, body) {
     // console.log(res.statusCode); // 404 if missing; 200 (probably?) if present
     // console.log(body); // body.message === 'Not Found' if not found; Probably not that if found.
- 
+
     var contributors = JSON.parse(body);
     contributors.forEach((contributor) => {
       handleFetchAvatarUrl(contributors)
