@@ -4,6 +4,9 @@ var fs = require('fs');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
+var repoOwner = process.argv[2];
+var repoName = process.argv[3];
+
 function getRepoContributors(repoOwner, repoName, handleFetchAvatarUrl) {
   var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
@@ -38,5 +41,4 @@ var fetchAvatarUrl = function (contributors) {
 }
 
 
-getRepoContributors("jquery", "jquery", fetchAvatarUrl);
-downloadImageByURL('https://avatars3.githubusercontent.com/u/156867?v=4', 'avatars/Monica.jpg')
+getRepoContributors(repoOwner, repoName, fetchAvatarUrl);
