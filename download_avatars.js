@@ -3,22 +3,33 @@ var secrets = require('./secrets.js');
 
 console.log('Welcome to the GitHub Avatar Downloader!');
 
-function getRepoContributors(repoOwner, repoName, cb) {
-var options = {
+function getRepoContributors(repoOwner, repoName, handleFetchAvatarUrl) {
+  var options = {
     url: "https://api.github.com/repos/" + repoOwner + "/" + repoName + "/contributors",
     headers: {
         'User-Agent': 'request',
-        'Authorization': 'secrets'
+        'Authorization': secrets.GITHUB_TOKEN
     }
-};
+  };
 
-request(options.url, function(err, res, body) {
-    cb(err, body);
-});
+//this is an Asynchronous function. This is why it includes a callback.
+// when you complete this network request (could take 10 sec), call the callback and run the code inside it.
+    request(options, function(err, res, body) {
+    //res.body -- this is strandard for finding the body.
+    //JSON.parse is going to take the res.body and convert it to an array.
+    var contributors = JSON.parse(res.body);
+    // console.log('this is the response ', res.body)
+    contributors.forEach((contributor) => {
+        handleFetchAvatarUrl(contributor.avatar_url)
+        // console.log(contributor);
+    });
+  });
 
 }
 
-getRepoContributors("jquery", "jquery", function(err, result) {
-    console.log("Errors:", err);
-    console.log("Result:", result);
-});
+var fetchAvatarUrl = function(avatarUrl) {
+  console.log(avatarUrl);
+}
+
+
+getRepoContributors("jquery", "jquery", fetchAvatarUrl);
